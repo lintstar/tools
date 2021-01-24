@@ -1,0 +1,34 @@
+<html>
+<textarea name="str" id="str" style="margin: 5px;width:700px; height:300px;"></textarea>
+<hr>
+<button onclick="urlDecode()">URL解码</button>
+<button onclick="urlEncode()">URL编码</button>
+<button onclick="base64Decode()">base64解码</button>
+<button onclick="base64Encode()">base64编码</button>
+</html>
+
+<script>
+	function urlDecode(){
+		var str=document.getElementById('str').value;
+		var reStr=decodeURIComponent(str);
+		document.getElementById('str').value=reStr;
+	}
+
+	function urlEncode(){
+		var str=document.getElementById('str').value;
+		var reStr=encodeURIComponent(str);
+		document.getElementById('str').value=reStr;
+	}
+
+	function base64Decode(){
+		var str=document.getElementById('str').value;
+		var reStr=window.atob(str);
+		document.getElementById('str').value=reStr;
+	}
+
+	function base64Encode(){
+		var str=document.getElementById('str').value;
+		var reStr=window.btoa(str);
+		document.getElementById('str').value=reStr;
+	}
+</script>
